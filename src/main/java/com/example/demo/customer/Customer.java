@@ -8,14 +8,14 @@ import jakarta.validation.constraints.NotBlank;
 public class Customer {
     private final Long id;
 
-    @NotBlank // This annotation comes with spring-boot-starter-validation and forces that this property can't be blank. It only works with @Valid annotation on the service.
+    @NotBlank(message = "name must be not empty") // This annotation comes with spring-boot-starter-validation and forces that this property can't be blank. It only works with @Valid annotation on the service.
     private final String name;
 
-    @NotBlank
+    @NotBlank(message = "email must be not empty")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // Allows us to send passwords but not read a password from the client
     private final String password;
 
-    @NotBlank
+    @NotBlank(message = "password must be not empty")
     @Email // This annotation comes with spring-boot-starter-validation and ensures that the email is valid. We can pass as a parameter the regular expression that we want if we want a custom validation. It only works with @Valid annotation on the service.
     private final String email;
 
