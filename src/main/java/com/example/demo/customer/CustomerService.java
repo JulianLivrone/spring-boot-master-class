@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -14,13 +15,21 @@ public class CustomerService {
 
     @Autowired() // Using Dependency Injection we make sure that this CustomerRepo class is going to be a Singleton, by default it takes the implementation annotated with @Primary.
     public CustomerService(
-            //@Qualifier("fake") With this annotation we indicate Spring which implementation to use if we don't want the primary.
+            //@Qualifier("fake") With this annotation we indicate Spring which implementation of CustomerRepo to use if we don't want the primary.
             CustomerRepo customerRepo
     ) {
         this.customerRepo = customerRepo;
     }
 
-    List<Customer> getCustomer(){
+    List<Customer> getCustomers(){
         return customerRepo.getCustomers();
+    }
+
+    Customer getCustomer(Long id) {
+        return getCustomers()
+                .stream()
+                .filter(customer -> customer.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("customer not found"));
     }
 }

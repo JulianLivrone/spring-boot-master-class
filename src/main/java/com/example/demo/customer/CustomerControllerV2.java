@@ -1,28 +1,38 @@
 package com.example.demo.customer;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-@RequestMapping(path = "api/v1/customer")
+@RequestMapping(path = "api/v2/customers")
 @RestController // Allows us to handle HTTP requests.
-@Deprecated // Tells us that this version of our API is deprecated and that we should use another version
-public class CustomerController {
+public class CustomerControllerV2 {
 
     private final CustomerService customerService;
     @Autowired
-    public CustomerController(CustomerService customerService) {
+    public CustomerControllerV2(CustomerService customerService) {
         this.customerService = customerService;
     }
 
-    @GetMapping(value = "all")
-    List<Customer> getCustomer() {
+    @GetMapping
+    List<Customer> getCustomers() {
         return customerService.getCustomers();
     }
 
+    @GetMapping(path = "{customerId}")
+    Customer getCustomer(@PathVariable("customerId") Long id) {
+        return customerService.getCustomer(id);
+    }
+
     @PostMapping
-    void createNewCustomer(@RequestBody /* @RequestBody Allows us to get the JSON object on the body that the client send us. */ Customer customer) {
+    void createNewCustomer(
+            @Valid // With this annotation we "activate" the validations for the customer object. In our case is that the name and the passwords are not blank
+            @RequestBody // @RequestBody Allows us to get the JSON object on the body that the client send us.
+                    Customer customer) {
         System.out.println("POST REQUEST...");
         System.out.println(customer);
     }
