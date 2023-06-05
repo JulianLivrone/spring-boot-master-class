@@ -13,8 +13,6 @@ import java.time.ZonedDateTime;
 @ControllerAdvice // Allows us to have multiple @ExceptionHandler in one class and that this works across my entire application.
 public class ApiExceptionHandler {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ApiExceptionHandler.class);
-
     @ExceptionHandler(value = ApiRequestException.class) // Annotation that indicates which exception is this method going to handle. @ExceptionHandler(value = {}) for multiple exceptions.
     public ResponseEntity<Object> handleApiRequestException(ApiRequestException e) {
         ApiException apiException = new ApiException(e.getMessage(), e, HttpStatus.BAD_REQUEST, ZonedDateTime.now());

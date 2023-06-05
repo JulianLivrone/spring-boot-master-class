@@ -5,9 +5,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
-@Table // This two annotations allows us to map this class to a table in our database.
+@Table // This last two annotations allows us to map this class to a table in our database.
+@ToString // This annotation comes with Lombok, it creates the method toString() and updates it if we change the attributes of our class.
+@AllArgsConstructor // This annotation comes with Lombok, it creates the constructor of the class with all the arguments and updates it if we change the attributes of our class.
+@NoArgsConstructor // This annotation comes with Lombok, it creates the constructor of the class with no arguments and updates it if we change the attributes of our class.
+// Lombok only allows for NoArgsConstructor() or AllArgsConstructor(), so if we need a constructor with some arguments I have to create it manually.
+@EqualsAndHashCode // This annotation comes with Lombok, it creates the equals() and hashCode() methods of the class and updates it if we change the attributes of our class.
 public class Customer {
 
     @Id
@@ -25,15 +34,15 @@ public class Customer {
     private String email;
 
 
-    public Customer(Long id, String name, String password, String email) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
-        this.email = email;
-    }
-
-    public Customer() {
-    }
+//    public Customer(Long id, String name, String password, String email) {
+//        this.id = id
+//        this.name = name;
+//        this.password = password;
+//        this.email = email;
+//    }
+//
+//    public Customer() {
+//    }
 
     @JsonProperty("customer_id") // It allows us to change the name of the property when we return it to the client (before was id and now customer_id)
     public Long getId() {
@@ -53,13 +62,14 @@ public class Customer {
         return email;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Customer{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", password='" + password + '\'' +
+//                ", email='" + email + '\'' +
+//                '}';
+//    }
+
 }
