@@ -23,6 +23,7 @@ public class CustomerConfiguration {
     CustomerRepo customerRepo() {
         // This method selects which implementation of CustomerRepo to use at the start of the application depending on the value of the useFakeCustomerRepo variable in the configurations, with this setup we don't have to use @Qualifier for choosing which implementation. Ando also we don't have to use the @Repository and @Primary in CustomerFakeRepository and CustomerRepository because with this method alone, based on the app configuration, we already instantiate the corresponding class that we need, if we leave these annotations we would have two instances of each class, which may conduct to errors.
         System.out.println("useFakeCustomerRepo = " + useFakeCustomerRepo);
-        return useFakeCustomerRepo ? new CustomerFakeRepository() : new CustomerRepository();
+        //return useFakeCustomerRepo ? new CustomerFakeRepository() : new CustomerRepository();
+        return new CustomerFakeRepository();
     }
 }
