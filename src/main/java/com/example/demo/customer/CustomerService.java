@@ -1,6 +1,8 @@
 package com.example.demo.customer;
 
 import com.example.demo.exception.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,9 @@ import java.util.List;
 @Service // This annotation is more specific than @Component, they are the same thing but @Service gives more context by saying that this class is meant to be used as a service.
 public class CustomerService {
     //private final CustomerRepo customerRepo; Now we will use the CustomerRepository interface that extends JpaRepository
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
+
     private final CustomerRepository customerRepository;
 
     @Autowired() // Using Dependency Injection we make sure that this CustomerRepo class is going to be a Singleton, by default it takes the implementation annotated with @Primary.
@@ -24,12 +29,18 @@ public class CustomerService {
     }
 
     List<Customer> getCustomers(){
+        LOGGER.info("getCustomers was called");
         return customerRepository.findAll();
     }
 
     Customer getCustomer(Long id) {
+
         return customerRepository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("customer with id " + id + " not found"));
+                .orElseThrow(() -> {
+                    NotFoundException notFoundException = new NotFoundException("customer with id " + id + " not found");
+                    LOGGER.error("error in getting customer {}", id, notFoundException);
+                    return notFoundException;
+                });
     }
 }
